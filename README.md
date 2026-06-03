@@ -1,266 +1,157 @@
 # Autonomous Garden Management System (GMS)
 
-The **Autonomous Garden Management System**, or **GMS**, is a low-cost outdoor robotics platform for garden maintenance tasks such as mowing, hose positioning, and controlled liquid application.
+![CAD overview](media/cad_overview.jpg)
 
-The project is built around an aluminum-channel chassis, an ESP32-P4 high-level controller, STM32 F103 low-level microcontrollers, repurposed high-torque servo motors for drivetrain actuation, and modular garden-tooling hardware.
+The **Autonomous Garden Management System**, or **GMS**, is an early-stage, low-cost autonomous garden maintenance robot for mowing, watering, hose aiming, and modular garden tooling.
 
-This repository is currently an early-stage build log and engineering documentation hub. Firmware, CAD files, wiring diagrams, and field-test data will be added as each subsystem becomes stable.
-
----
+The platform is built around an aluminum-channel chassis, a 36V power system, a front mower module, a rope-based mower lift, and a rear tooling area that is being developed around a hose turret. GMS is designed for autonomous operation, but this repository should be read as a build log for work in progress, not as documentation for a finished commercial product.
 
 ## Current Build Status
 
-### Completed
+This project is still being worked on.
 
-- Main drivetrain mechanical system
+Completed or mostly complete:
+
+- Drivetrain mechanical build
 - Front mower module
-- High-power BLDC mower motor wiring
-- Rope-based mower height lift mechanism
-- Main front-frame structure
-- Initial FOC motor controller wiring
-- Initial worm-gear rotating turret base
+- Mower up/down lift mechanism using a custom rope-based lift system
+- FOC mower motor controller wiring
+- Front section of the robot
+- Phase 1 of the hose turret: worm-gear rotating base for the first degree of freedom
 
-### In Progress
+In progress:
 
-- ESP32-P4 high-level control system
-- STM32 F103 low-level motor and sensor control
-- Encoder wiring and drivetrain feedback
-- Rear turret module
-- Hose aiming system
-- Control box layout
-- Full wiring documentation
+- Rear section of the robot
+- 2-DOF hose turret
+- Hose docking interface for a base station
+- ESP32-P4 high-level control software
+- STM32 F103 low-level control firmware
+- Wiring cleanup, control box layout, and test documentation
 
-### Planned
+Planned:
 
-- 2-DOF water-hose turret
-- Base-station docking with hose connection
-- Electrically controlled water flow
-- Modular controlled liquid-application system
-- Outdoor navigation and obstacle sensing
-- Field testing videos and performance logs
-
----
+- Second hose turret degree of freedom for up/down hose angle
+- Autonomous hose attach/detach behavior when parked at the base station
+- Plant-targeted watering
+- Controlled liquid application module, tested with water first
+- Field testing, logging, and updated cost tracking
 
 ## Project Goals
 
-GMS is designed around four main goals:
-
-1. **Low cost**  
-   The target is to keep the core robot platform around the $250 range by using inexpensive aluminum channel, low-cost microcontrollers, repurposed servo motors, and commodity motor controllers.
-
-2. **Outdoor robustness**  
-   The frame is built from aluminum channel instead of relying on a fragile 3D-printed-only structure. The chassis is designed to tolerate rough terrain, vibration, grass, and minor impacts.
-
-3. **Modular garden tooling**  
-   The front of the robot contains the mowing system. The rear is being developed as a modular turret system for watering and other garden tasks.
-
-4. **Microcontroller-based autonomy**  
-   Instead of using an expensive Raspberry Pi 5-class single-board computer, the robot is designed around an ESP32-P4 for high-level control and STM32 F103 boards for low-level real-time I/O.
-
----
+- Keep the core platform inexpensive, with a target core platform cost around $250 once the BOM is finalized.
+- Use common hardware-store and commodity electronics parts where practical.
+- Build a mechanically useful outdoor robot instead of a fragile display-only prototype.
+- Support mowing, watering, hose aiming, and modular rear garden tooling.
+- Use microcontrollers for control instead of an expensive Raspberry Pi 5-class SBC.
+- Document the design honestly as it is built, tested, changed, and improved.
 
 ## Mechanical Overview
 
-The chassis uses approximately 16 feet of aluminum channel as the main frame material. This keeps the robot affordable while still providing a strong outdoor structure.
+The chassis uses around 16 feet of aluminum channel from Lowe's as a cheap but robust frame material. Aluminum channel keeps the frame accessible and easy to modify while still giving the robot a real outdoor structure.
 
-The aluminum frame also gives the robot a small amount of natural compliance. This may help the robot absorb uneven terrain compared with a completely rigid chassis.
+The aluminum-channel frame also has slight compliance. That flexibility may help the robot handle rough terrain better than a fully rigid chassis, although this still needs outdoor testing.
 
-The robot is divided into two main sections:
+The robot is split into two main areas:
 
-### Front section
-
-The front section contains:
-
-- Drivetrain
-- Mower motor
-- Mower height lift mechanism
-- Main power electronics
-- FOC motor controller wiring
-
-This part of the robot is the most complete.
-
-### Rear section
-
-The rear section is still being developed. It will contain:
-
-- Rotating turret base
-- Hose aiming system
-- Docking interface for a base-station hose
-- Controlled liquid-application hardware
-
-The first turret degree of freedom is a worm-gear rotating base. The second degree of freedom will raise and lower the hose angle.
-
----
+- **Front section:** drivetrain, mower module, mower lift, battery placement, and main mower electronics.
+- **Rear section:** hose turret, base-station hose interface, and future modular garden tooling.
 
 ## Mower System
 
-The mower module uses a C6374-class BLDC motor. The motor hardware has high peak-power capability compared with typical low-cost mower motors.
+The mower module uses a C6374-class BLDC motor with high peak-power capability. The robot is a 36V system. The motor/controller hardware has high burst capability, while normal cutting use is expected to be far lower than the hardware peak.
 
-The robot currently uses a 36V electrical system. Although the mower motor and controller hardware are capable of high burst power, normal operating power is expected to be much lower than the maximum hardware rating.
+The current mower controller is a low-cost ODrive-style FOC controller, around $40, for torque-capable BLDC control. A simpler version of the robot could use a cheaper sensorless e-bike-style BLDC controller if precise torque control is not required.
 
-The current controller is a low-cost ODrive-style FOC controller. A simpler version of the project could use a cheaper sensorless e-bike-style BLDC controller.
+## Rope-Based Mower Lift Mechanism
 
----
+The mower up/down mechanism is mechanically complete and uses a custom rope-based lift system. The purpose is to raise and lower the mower assembly without requiring a heavy linear actuator or expensive mechanical stage.
 
-## Mower Height Lift Mechanism
-
-The mower height mechanism uses a custom rope-based lift system to raise and lower the mower assembly.
-
-This allows the cutting height to be adjusted electronically instead of manually. The goal is to make the mower module more flexible during autonomous operation.
-
----
+The lift mechanism still needs repeated load testing, position repeatability checks, and safety validation before it should be trusted during autonomous operation.
 
 ## Drivetrain
 
-The drivetrain uses repurposed DS3240 servo motors as low-cost drive motors.
+The drivetrain uses DS3240 servos repurposed as drivetrain motors. This is much cheaper than many traditional robotics drivetrain motor options and fits the low-cost design philosophy of the project.
 
-A 4-pack of these motors costs much less than most traditional robotics drivetrain motors, which helps keep the project affordable. The servos are being used as high-torque drivetrain actuators instead of standard position-control servos.
-
-The drivetrain will eventually use encoder feedback for movement estimation and low-level closed-loop control.
-
----
+The drivetrain is mechanically done. Low-level control work will use STM32 F103 Blue Pill boards for encoder reading, motor PWM, BTS7960 control, and sensor I/O.
 
 ## Electronics Architecture
 
-GMS uses a distributed microcontroller architecture.
+GMS uses a distributed microcontroller architecture:
 
-### High-level controller
+- **ESP32-P4:** high-level controller for autonomy logic, subsystem coordination, and behavior planning.
+- **2x STM32 F103 Blue Pill boards:** low-level controllers for encoder reading, motor PWM, BTS7960 control, and sensor I/O.
+- **BNO085 IMU:** orientation and motion sensing.
+- **Low-cost ODrive-style FOC controller:** BLDC mower motor control.
+- **36V battery system:** main robot power bus, with lower-voltage regulation for logic electronics.
 
-- ESP32-P4
-- Handles high-level autonomy logic
-- Coordinates low-level controllers
-- Manages robot behavior and garden-tool operation
-
-### Low-level controllers
-
-- 2x STM32 F103 Blue Pill microcontrollers
-- Handle real-time I/O
-- Read encoder signals
-- Control motor PWM outputs
-- Interface with motor drivers
-- Reduce timing load on the ESP32-P4
-
-### Sensors and I/O
-
-Planned or current I/O includes:
-
-- 4 analog encoder signals
-- 8 motor PWM signals
-- BTS7960 motor drivers
-- BNO085 IMU
-- Stepper motor control
-- DS3240 servo control
-- BLDC mower motor controller
-- Turret motor control
-- Hose/base-station interface
-
----
+This architecture keeps the robot cheaper and more embedded than a Raspberry Pi 5-class SBC design while leaving enough control capability for mowing, watering, docking, and modular tooling experiments.
 
 ## Control Box
 
-The control box is designed to protect the main electronics from outdoor electrical noise, motor surges, and wiring faults.
+The control box is intended to organize and protect the electronics rather than simply hold loose wiring. It will contain the ESP32-P4, STM32 boards, motor driver wiring, power distribution, signal isolation/protection, sensor wiring, safety disconnects, and debug access.
 
-The system uses protection and isolation between low-voltage control electronics and noisy motor-power electronics wherever practical. The goal is to prevent drivetrain or mower power faults from damaging the high-level controller.
-
-The control box will contain:
-
-- ESP32-P4 high-level controller
-- STM32 F103 low-level controllers
-- Motor driver wiring
-- Power distribution
-- Signal isolation/protection
-- Sensor wiring terminals
-- Safety disconnects
-- Debug/programming access
-
----
+The control box is still in progress. Wiring should be treated as experimental until fusing, strain relief, connector labeling, grounding, and emergency shutoff behavior are fully tested.
 
 ## Watering Turret
 
-The rear turret system is being developed as a 2-degree-of-freedom hose aiming module.
+The rear turret is being developed as a 2-DOF hose aiming module.
 
-The first degree of freedom is the rotating base. The second degree of freedom will raise and lower the hose angle.
+Phase 1 is the worm-gear rotating base for the first degree of freedom. The second degree of freedom, which will raise and lower the hose angle, will be built later.
 
-The robot is intended to connect to a base station with a hose attachment. When the robot parks at the base station, it can attach to or detach from the hose system and aim water toward plants using the turret.
+The robot will connect to a base station with a hose attachment. When parked at the base station, the hose can be autonomously attached or detached. The hose turret can then aim water toward plants.
 
-Planned features:
-
-- 2-DOF hose aiming
-- Base-station docking
-- Electrically controlled water flow
-- Plant-targeted watering
-- Modular rear tooling
-
----
-
-## Liquid Application Module
-
-A small rear-mounted container and pump may be used for controlled liquid application.
-
-This module is intended to be modular and should only be used with safe, legal, and properly handled liquids. Testing should be performed with water before any other liquid is used.
-
----
+There may also be a small rear-mounted pump/container module for controlled liquid application. Any testing should be done with water first, and any future use must follow local rules, product labels, and safety requirements.
 
 ## Cost Philosophy
 
-The project is designed to be affordable by avoiding expensive robotics parts wherever possible.
+The cost goal is a target core platform cost around $250, but that should not be treated as a final claim until the BOM is complete.
 
-Examples:
+The main cost-saving choices are:
 
-- Aluminum channel frame instead of a custom machined frame
-- ESP32-P4 instead of a Raspberry Pi 5-class single-board computer
-- STM32 F103 boards for low-level I/O
-- Repurposed DS3240 servos as drivetrain motors
-- Low-cost BLDC controller options
+- Aluminum-channel frame material
+- ESP32-P4 high-level controller instead of an expensive SBC
+- STM32 F103 Blue Pill boards for low-level real-time control
+- DS3240 servos repurposed as drivetrain motors
 - Commodity BTS7960 motor drivers
-- 3D-printed and DIY mechanical assemblies
+- Low-cost ODrive-style FOC controller for the mower motor
+- 3D-printed and hand-built mechanical modules
 
-The target cost for the core platform is around $250. A full cost breakdown will be added in `BOM.md` as the design stabilizes.
-
----
-
-## Media
-
-Images will be added in the `media/` folder.
-
-Planned media:
-
-- Main robot photo
-- CAD overview render
-- Drivetrain photos
-- Mower lift mechanism photos
-- Turret base photos
-- Wiring diagrams
-
----
+See [BOM.md](BOM.md) and [docs/cost_breakdown.md](docs/cost_breakdown.md) for the working cost notes.
 
 ## Repository Status
 
-This repository is early-stage.
+This repository currently contains public documentation and placeholders for firmware, CAD, hardware notes, wiring diagrams, and tests.
 
-Current contents focus on:
-
-- Mechanical design notes
-- System architecture
-- Build logs
-- Wiring plans
-- CAD organization
-- Test documentation
-
-Firmware will be added as each subsystem becomes stable.
-
----
+The documentation is intentionally conservative. Subsystems are marked as complete only when they are mechanically built or wired, and autonomous behavior is described as designed or planned until it is tested.
 
 ## Safety Notice
 
-This is an experimental outdoor robotics project.
+This is an experimental outdoor robotics project with high-current electrical systems, rotating mower hardware, drive motors, and liquid handling. Treat the mower module and drivetrain as dangerous during testing.
 
-The mower system uses high-power rotating hardware and must be treated as dangerous. Testing should be done with proper guards, emergency shutoff, controlled power, and no people or pets near the robot.
+Use guards, fuses, emergency shutoff, controlled test areas, and safe standoff distance. Test drivetrain behavior with the mower disabled first. Test liquid systems with water first.
 
-Liquid application systems should be tested with water first and must follow all local rules and product safety instructions.
+See [SAFETY.md](SAFETY.md) for more detailed safety notes.
 
----
+## Media
+
+Current build progress and outdoor drive testing photos are shown below.
+
+![Robot main photo](media/robot_main.jpg)
+
+![Outdoor drive testing](media/drive_testing.jpg)
+
+Additional media will be organized in [media/](media/README.md) as the project develops.
+
+## Documentation
+
+- [Roadmap](ROADMAP.md)
+- [Bill of Materials](BOM.md)
+- [Safety](SAFETY.md)
+- [System overview](docs/system_overview.md)
+- [Mechanical design](docs/mechanical_design.md)
+- [Electronics architecture](docs/electronics_architecture.md)
+- [Build status](docs/build_status.md)
 
 ## License
 
-License to be selected.
+License selection is still pending. See [LICENSE](LICENSE).

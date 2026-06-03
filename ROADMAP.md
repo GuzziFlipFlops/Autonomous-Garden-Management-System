@@ -1,72 +1,77 @@
 # Roadmap
 
-## Phase 1 — Mechanical Platform
+This roadmap reflects the current public build plan. Dates are intentionally omitted until each subsystem has enough test data to support scheduling.
 
-- Build aluminum-channel chassis
-- Complete drivetrain
-- Complete front mower assembly
-- Complete mower lift mechanism
-- Mount main electronics
+## Phase 1 - Mechanical Platform
 
 Status: mostly complete
 
-## Phase 2 — Low-Level Control
+- Build aluminum-channel chassis
+- Complete drivetrain mechanical assembly
+- Complete front mower module
+- Complete rope-based mower lift mechanism
+- Mount major front-section hardware
+
+## Phase 2 - Low-Level Control
+
+Status: in progress
 
 - Wire drivetrain encoders
-- Test STM32 F103 analog encoder reading
+- Test STM32 F103 encoder reading
 - Test BTS7960 motor control
-- Send low-level motor/sensor data to ESP32-P4
+- Send low-level motor and sensor data to the ESP32-P4
 - Validate drivetrain movement feedback
 
+## Phase 3 - Mower Control
+
 Status: in progress
 
-## Phase 3 — Mower Control
-
-- Test BLDC mower motor control
-- Add safe enable/disable logic
-- Add emergency cutoff
-- Test mower lift control
+- Test C6374-class BLDC mower motor control
+- Validate low-cost ODrive-style FOC controller behavior
+- Add safe enable and disable logic
+- Add emergency cutoff behavior
+- Test mower lift control under load
 - Document safe operating limits
 
-Status: in progress
+## Phase 4 - Rear Hose Turret
 
-## Phase 4 — Rear Turret
+Status: in progress
 
 - Complete worm-gear rotating base
-- Add second axis for hose elevation
-- Test turret repeatability
+- Test first turret degree of freedom
+- Build second hose elevation axis
 - Add hose mount
-- Add base-station docking interface
+- Add base-station hose interface
 
-Status: in progress
+## Phase 5 - Base Station and Watering
 
-## Phase 5 — Base Station and Watering
+Status: planned
 
 - Build hose docking station
-- Add electrically controlled water flow
-- Add docking alignment sensors
-- Test attach/detach behavior
-- Test hose pointing accuracy
+- Add controlled water flow
+- Add docking alignment sensors or guides
+- Test autonomous hose attach/detach behavior
+- Test hose pointing repeatability
+
+## Phase 6 - Designed Autonomous Operation
 
 Status: planned
 
-## Phase 6 — Autonomous Operation
-
-- Add navigation sensors
+- Add navigation sensors as needed
 - Add basic path following
-- Add obstacle detection
+- Add obstacle detection and stop behavior
 - Add docking behavior
 - Add plant-targeted watering behavior
+- Keep mower-disabled tests separate from mower-enabled tests
+
+## Phase 7 - Field Testing
 
 Status: planned
 
-## Phase 7 — Field Testing
-
-- Test on concrete
+- Test on flat ground
 - Test on grass
 - Test slope handling
-- Test mower height system
-- Test watering turret
+- Test mower height repeatability
+- Test watering turret aiming
 - Measure runtime, reliability, and thermal behavior
-
-Status: planned
+- Update documentation after failures and design changes
