@@ -11,3 +11,7 @@ The planned architecture uses an ESP32-P4 as the high-level controller and two S
 - [stm32_low_level_b](stm32_low_level_b/README.md): low-level mower, lift, turret, or auxiliary I/O control
 
 Pin maps, protocols, and firmware build instructions will be added after the wiring plan stabilizes.
+
+## License
+
+Firmware and software in this folder are licensed under the MIT License unless a specific file says otherwise.
