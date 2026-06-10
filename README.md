@@ -154,4 +154,6 @@ Additional media will be organized in [media/](media/README.md) as the project d
 
 ## License
 
-License selection is still pending. See [LICENSE](LICENSE).
+This repository is released under the MIT License.
+
+Please preserve the copyright and attribution notices in [LICENSE](LICENSE) and [NOTICE](NOTICE) when copying, modifying, or redistributing substantial portions of the project.

@@ -13,3 +13,7 @@ This folder will hold design files, printable prototypes, exported models, and n
 - Future hose elevation axis
 
 The current README image uses a CAD overview render in `media/cad_overview.jpg`.
+
+## License
+
+CAD and hardware design source in this folder are licensed under the MIT License unless a specific file says otherwise.
