@@ -1,159 +1,88 @@
-# Autonomous Garden Management System (GMS)
+# Autonomous Garden Rover
 
-![CAD overview](media/cad_overview.jpg)
+This is an open source outdoor garden robot that can mow grass and water plants for under $400. It features a powerful 3000 watt C6374 motor for mowing grass with electronic height control, and a large Nema17 turret system for watering at target places that supports a normal garden hose. The rover currently uses a 9 axis IMU + wheel encoders for autonomous function. The brain of this rover is a powerful ESP32-P4, which gives this rover the capability to listen and respond to commands using its built in microphone and speaker. 
 
-The **Autonomous Garden Management System**, or **GMS**, is an early-stage, low-cost autonomous garden maintenance robot for mowing, watering, hose aiming, and modular garden tooling.
+## Inspiration
 
-The platform is built around an aluminum-channel chassis, a 36V power system, a front mower module, a rope-based mower lift, and a rear tooling area that is being developed around a hose turret. GMS is designed for autonomous operation, but this repository should be read as a build log for work in progress, not as documentation for a finished commercial product.
+I spend hours each week gardening and mowing grass. As someone into robotics, I realized I could build a garden rover to automate some of these repetitive chores. This project gave me a reason to learn more about robotics while building something useful for my yard.
 
-## Current Build Status
+[**Watch the demo**](https://youtu.be/P-olpegfmmU) · [**Macondo journal**](https://macondo.hackclub.com/projects/9276) · [**See the assembly**](CAD/)
 
-This project is still being worked on.
+[![Autonomous Garden Rover demo](https://i.ytimg.com/vi/P-olpegfmmU/maxresdefault.jpg)](https://youtu.be/P-olpegfmmU)
 
-Completed or mostly complete:
+## Features
 
-- Drivetrain mechanical build
-- Front mower module
-- Mower up/down lift mechanism using a custom rope-based lift system
-- FOC mower motor controller wiring
-- Front section of the robot
-- Phase 1 of the hose turret: worm-gear rotating base for the first degree of freedom
 
-In progress:
+* Under $400, anyone can build it
+* All four wheels are motorized
+* C6374 Motor offers 3000W+ of power, more than most commercial systems
+* Nema17 planetary motors lift and raise the mower using a rope system.
+* The turret system uses high reduction worm + dual stage planetary drives to shoot water
+* Has a microphone and speaker and can run small ai vision/text recognition models
+* Water flow can be controlled using a seperate esp32 controller
+* Can be controlled from a phone or handheld controller
+* Uses a 9axis imu and encoders on all four wheels for precise autonomous
+* The aluminum chassis bends and acts as a suspension
+* Supports raspberry pi 5 with ROS 2 as brain
+* Supports a custom hand held controller from my previous FPV claw drone project
+* Advanced flexibility for conneting new sensors, cameras, and electronics
+* Water resistant
 
-- Rear section of the robot
-- 2-DOF hose turret
-- Hose docking interface for a base station
-- ESP32-P4 high-level control software
-- STM32 F103 low-level control firmware
-- Wiring cleanup, control box layout, and test documentation
 
-Planned:
+# Building it yourself
 
-- Second hose turret degree of freedom for up/down hose angle
-- Autonomous hose attach/detach behavior when parked at the base station
-- Plant-targeted watering
-- Controlled liquid application module, tested with water first
-- Field testing, logging, and updated cost tracking
+Go to [**INSTRUCTIONS.md**](INSTRUCTIONS.md) to see the complete build instructions.
 
-## Project Goals
+## Block schematic
 
-- Keep the core platform inexpensive, with a target core platform cost around $250 once the BOM is finalized.
-- Use common hardware-store and commodity electronics parts where practical.
-- Build a mechanically useful outdoor robot instead of a fragile display-only prototype.
-- Support mowing, watering, hose aiming, and modular rear garden tooling.
-- Use microcontrollers for control instead of an expensive Raspberry Pi 5-class SBC.
-- Document the design honestly as it is built, tested, changed, and improved.
+This is a block level schematic of how each system is split
 
-## Mechanical Overview
+![Block-level electrical schematic](pictures/block%20level%20schematic%20picture%20kicad.png)
 
-The chassis uses around 16 feet of aluminum channel from Lowe's as a cheap but robust frame material. Aluminum channel keeps the frame accessible and easy to modify while still giving the robot a real outdoor structure.
+Kicad: [`Schematics/Block-level schematic/`](Schematics/Block-level%20schematic/).
 
-The aluminum-channel frame also has slight compliance. That flexibility may help the robot handle rough terrain better than a fully rigid chassis, although this still needs outdoor testing.
 
-The robot is split into two main areas:
 
-- **Front section:** drivetrain, mower module, mower lift, battery placement, and main mower electronics.
-- **Rear section:** hose turret, base-station hose interface, and future modular garden tooling.
+## Bill of materials
 
-## Mower System
+| Item                                                         | Qty. | Unit price |       Total | Link                                                                                                                 |
+| ------------------------------------------------------------ | ---: | ---------: | ----------: | -------------------------------------------------------------------------------------------------------------------- |
+| Waveshare ESP32-P4-WIFI6 development board                   |    1 |     $26.87 |      $26.87 | [Amazon](https://www.amazon.com/dp/B0FM3SPXZG)                                                                       |
+| Steelworks 3/4 in x 8 ft aluminum channel                    |    2 |     $19.98 |      $39.96 | [Lowe's](https://www.lowes.com/pd/Steelworks-3-4-in-W-x-8-ft-L-Mill-Finished-Aluminum-Weldable-Trim-Channel/3058185) |
+| LGXSHOP C6374 170KV sensored BLDC motor                      |    1 |     $29.50 |      $29.50 | [Amazon](https://www.amazon.com/dp/B0GR88K1XP)                                                                       |
+| STM32F103C6T6 Blue Pill development board                    |    1 |      $1.75 |       $1.75 | [AliExpress](https://www.aliexpress.us/item/3256809531654480.html)                                                   |
+| BTS7960 high-current motor driver board                      |    2 |      $5.56 |      $11.12 | [AliExpress](https://www.aliexpress.us/item/3256812145540065.html)                                                   |
+| DS3230 PRO drivetrain servo motors (4-pack)                  |    1 |     $41.37 |      $41.37 | [AliExpress](https://www.aliexpress.us/item/3256808314550897.html)                                                   |
+| STEPPERONLINE NEMA 17 stepper motors (3-pack)                |    1 |     $25.99 |      $25.99 | [Amazon](https://www.amazon.com/dp/B0B38GHRH8)                                                                       |
+| Stepper controller board (12-24 VDC)                         |    1 |     $22.99 |      $22.99 | [Amazon](https://www.amazon.com/dp/B0CCVSMGXR)                                                                       |
+| EONO PETG 3D printer filament 1 kg black                     |    2 |      $9.99 |      $19.98 | [Amazon](https://www.amazon.com/EONO3D-Printer-Filament-1-75mm-2-2lbs/dp/B0G2BQQ5RT)                                 |
+| 608 sealed steel bearings (20-pack)                          |    1 |      $4.99 |       $4.99 | [Amazon](https://www.amazon.com/dp/B0GX14YCFF)                                                                       |
+| M3 screw kit (420-piece)                                     |    1 |      $8.98 |       $8.98 | [Amazon](https://www.amazon.com/dp/B0CSWD34KJ)                                                                       |
+| Flipsky ODESC 56 V v4.2 single-axis controller               |    1 |     $39.99 |      $39.99 | [Amazon](https://www.amazon.com/dp/B0CB64MVHC)                                                                       |
+| 22 AWG wire (10 m)                                           |    1 |      $2.81 |       $2.81 | [AliExpress](https://www.aliexpress.us/item/3256801511977665.html)                                                   |
+| 36 V 10.4 Ah lithium battery with charger and XT60 connector |    1 |     $79.99 |      $79.99 | [eBay](https://www.ebay.com/itm/318206384216)                                                                        |
+| 20 A buck converter                                          |    2 |      $3.58 |       $7.16 | [AliExpress](https://www.aliexpress.us/item/3256808333733098.html)                                                   |
+| XL4005 buck converter                                        |    1 |      $1.99 |       $1.99 | [AliExpress](https://www.aliexpress.us/item/3256808679872256.html)                                                   |
+| MG996 servo motor                                            |    1 |      $3.44 |       $3.44 | [AliExpress](https://www.aliexpress.us/item/3256802804659030.html)                                                   |
+| ESP32-WROOM-32 development board with U.FL                   |    1 |      $7.32 |       $7.32 | [AliExpress](https://www.aliexpress.us/item/3256807142919728.html)                                                   |
+| BNO080/BNO085 9-DOF sensor module                            |    1 |     $18.99 |      $18.99 | [Amazon](https://www.amazon.com/dp/B0HCBRBZ76)                                                                       |
+| Hello Hobby 3/8 in x 36 in wood dowel                        |    1 |      $0.78 |       $0.78 | [Walmart](https://www.walmart.com/ip/684374236)                                                                      |
+| Tool Bench 40 ft diamond-braid rope with winder              |    1 |      $1.50 |       $1.50 | [Dollar Tree](https://www.dollartree.com/tool-bench-40-ft-diamond-braid-rope-with-winder-1-ct/295406)                |
+| **Estimated total**                                          |      |            | **$397.47** |                                                                                                                      |
 
-The mower module uses a C6374-class BLDC motor with high peak-power capability. The robot is a 36V system. The motor/controller hardware has high burst capability, while normal cutting use is expected to be far lower than the hardware peak.
+## What I would do differently next time and plan for in the future
 
-The current mower controller is a low-cost ODrive-style FOC controller, around $40, for torque-capable BLDC control. A simpler version of the robot could use a cheaper sensorless e-bike-style BLDC controller if precise torque control is not required.
+- Add cameras and GPS+RTK to the autonomous sensors
+- Use stronger drivetrain motors to support a higher speed and better turning (though it would increase the price to build)
+- Replace garden hose adapter system with a water tank onboard the rover
+- Make a custom PCB that combines all the electronics and sub systems into one board with quick connectors for peripherals (much more expensive though)
 
-## Rope-Based Mower Lift Mechanism
 
-The mower up/down mechanism is mechanically complete and uses a custom rope-based lift system. The purpose is to raise and lower the mower assembly without requiring a heavy linear actuator or expensive mechanical stage.
+## Repository Structure
 
-The lift mechanism still needs repeated load testing, position repeatability checks, and safety validation before it should be trusted during autonomous operation.
+In this repo, I have included everything needed to replicate and modify this project
 
-## Drivetrain
-
-The drivetrain uses DS3240 servos repurposed as drivetrain motors. This is much cheaper than many traditional robotics drivetrain motor options and fits the low-cost design philosophy of the project.
-
-The drivetrain is mechanically done. Low-level control work will use STM32 F103 Blue Pill boards for encoder reading, motor PWM, BTS7960 control, and sensor I/O.
-
-## Electronics Architecture
-
-GMS uses a distributed microcontroller architecture:
-
-- **ESP32-P4:** high-level controller for autonomy logic, subsystem coordination, and behavior planning.
-- **2x STM32 F103 Blue Pill boards:** low-level controllers for encoder reading, motor PWM, BTS7960 control, and sensor I/O.
-- **BNO085 IMU:** orientation and motion sensing.
-- **Low-cost ODrive-style FOC controller:** BLDC mower motor control.
-- **36V battery system:** main robot power bus, with lower-voltage regulation for logic electronics.
-
-This architecture keeps the robot cheaper and more embedded than a Raspberry Pi 5-class SBC design while leaving enough control capability for mowing, watering, docking, and modular tooling experiments.
-
-## Control Box
-
-The control box is intended to organize and protect the electronics rather than simply hold loose wiring. It will contain the ESP32-P4, STM32 boards, motor driver wiring, power distribution, signal isolation/protection, sensor wiring, safety disconnects, and debug access.
-
-The control box is still in progress. Wiring should be treated as experimental until fusing, strain relief, connector labeling, grounding, and emergency shutoff behavior are fully tested.
-
-## Watering Turret
-
-The rear turret is being developed as a 2-DOF hose aiming module.
-
-Phase 1 is the worm-gear rotating base for the first degree of freedom. The second degree of freedom, which will raise and lower the hose angle, will be built later.
-
-The robot will connect to a base station with a hose attachment. When parked at the base station, the hose can be autonomously attached or detached. The hose turret can then aim water toward plants.
-
-There may also be a small rear-mounted pump/container module for controlled liquid application. Any testing should be done with water first, and any future use must follow local rules, product labels, and safety requirements.
-
-## Cost Philosophy
-
-The cost goal is a target core platform cost around $250, but that should not be treated as a final claim until the BOM is complete.
-
-The main cost-saving choices are:
-
-- Aluminum-channel frame material
-- ESP32-P4 high-level controller instead of an expensive SBC
-- STM32 F103 Blue Pill boards for low-level real-time control
-- DS3240 servos repurposed as drivetrain motors
-- Commodity BTS7960 motor drivers
-- Low-cost ODrive-style FOC controller for the mower motor
-- 3D-printed and hand-built mechanical modules
-
-See [BOM.md](BOM.md) and [docs/cost_breakdown.md](docs/cost_breakdown.md) for the working cost notes.
-
-## Repository Status
-
-This repository currently contains public documentation and placeholders for firmware, CAD, hardware notes, wiring diagrams, and tests.
-
-The documentation is intentionally conservative. Subsystems are marked as complete only when they are mechanically built or wired, and autonomous behavior is described as designed or planned until it is tested.
-
-## Safety Notice
-
-This is an experimental outdoor robotics project with high-current electrical systems, rotating mower hardware, drive motors, and liquid handling. Treat the mower module and drivetrain as dangerous during testing.
-
-Use guards, fuses, emergency shutoff, controlled test areas, and safe standoff distance. Test drivetrain behavior with the mower disabled first. Test liquid systems with water first.
-
-See [SAFETY.md](SAFETY.md) for more detailed safety notes.
-
-## Media
-
-Current build progress and outdoor drive testing photos are shown below.
-
-![Robot main photo](media/robot_main.jpg)
-
-![Outdoor drive testing](media/drive_testing.jpg)
-
-Additional media will be organized in [media/](media/README.md) as the project develops.
-
-## Documentation
-
-- [Roadmap](ROADMAP.md)
-- [Bill of Materials](BOM.md)
-- [Safety](SAFETY.md)
-- [System overview](docs/system_overview.md)
-- [Mechanical design](docs/mechanical_design.md)
-- [Electronics architecture](docs/electronics_architecture.md)
-- [Build status](docs/build_status.md)
-
-## License
-
-This repository is released under the MIT License.
-
-Please preserve the copyright and attribution notices in [LICENSE](LICENSE) and [NOTICE](NOTICE) when copying, modifying, or redistributing substantial portions of the project.
+- Firmware images and source code
+- CAD source, assemblies, steps, and STLs
+- Visual instruction manual
+- Electrical schematics
